@@ -1,0 +1,67 @@
+<html
+	xmlns:th "http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout-user.html}"
+	xmlns:sec="https://wwww.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<body>
+	<div th:fragment="leftbar">
+		<!-- sidebar starts -->
+		<div class="sidebar">
+
+
+
+			<a th:href="${'/trangcanhan/thongtintaikhoan/'+taiKhoan.taiKhoan}"
+				style="text-decoration: none; color: inherit;">
+				<div class="sidebarRow">
+					<img class="user__avatar post__avatar " width="100%" height="400px" alt="" th:if="${taiKhoan.avatarURl != null and taiKhoan.avatarURl.startsWith('http')}"
+										th:src="${taiKhoan.avatarURl}" />
+									
+									<!-- Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác -->
+					<img class="user__avatar post__avatar " width="100%" height="400px" alt="" th:if="${taiKhoan.avatarURl != null and !taiKhoan.avatarURl.startsWith('http')}"
+						th:src="@{'/files/' + ${taiKhoan.avatarURl}}" />
+					<p style="word-wrap: break-word; color: black; font-size: 20px; font-weight: bold;">[[${taiKhoan.hoTen}]]</p>
+
+				</div>
+			</a> 
+			
+			<a href="/user/newfeed"
+				style="text-decoration: none; color: inherit;">
+				<div class="sidebarRow">
+					<span class="material-icons">home</span>
+					<h4 style="font-size: 20px;">Trang chủ</h4>
+				</div>
+			</a> <a href="/user/follow"
+				style="text-decoration: none; color: inherit;">
+				<div class="sidebarRow">
+					<span class="material-icons">people</span>
+					<h4 style="font-size: 20px;">Theo dõi</h4>
+				</div>
+			</a> <a href="/user/group" style="text-decoration: none; color: inherit;">
+				<div class="sidebarRow">
+					<span class="material-icons">groups</span>
+					<h4 style="font-size: 20px;">Nhóm</h4>
+				</div>
+			</a> 
+			<div sec:authorize="hasAuthority('ADMIN')">
+				<a href="/admin/manage/quanlynguoidung" style="text-decoration: none; color: inherit;">
+					<div class="sidebarRow">
+						<span class="material-icons">admin_panel_settings</span>
+						<h4 style="font-size: 20px;">Admin</h4>
+					</div>
+				</a>
+			</div>
+
+			</a> <a href="/logout" style="text-decoration: none; color: inherit;">
+				<div class="sidebarRow">
+					<span class="material-icons">logout</span>
+					<h4 style="font-size: 20px;">Đăng xuất</h4>
+				</div>
+			</a>
+			
+		</div>
+		<!-- sidebar ends -->
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<html
+	xmlns:th "http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout-user.html}">
+
+<head>
+<style>
+body {
+	margin-left: 100%;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: aliceblue;
+	/*background-color: aliceblue;*/
+}
+</style>
+</head>
+
+<body>
+	<div th:fragment="header">
+		<!-- header starts -->
+		<div class="header">
+			<div class="header__left">
+								<a href="/user/newfeed" style="word-wrap: break-word; color: black; font-size: 24px; font-weight: bold; text-decoration: none;">
+				<img
+					src="https://drive.google.com/uc?export=download&id=1bSB1yh1Fhx2ydklR6wQRG5EyB-iPLoI0"
+					alt="" />
+								</a>
+				<div class="header__input">
+					<span class="material-icons"> search </span> <input
+						id="searchInput" type="text" placeholder="Search ALOHCMUTE"
+						size="50" />
+				</div>
+				<a id="searchLink" href="#"></a>
+			</div>
+
+			<script>
+				document
+						.getElementById("searchInput")
+						.addEventListener(
+								"keypress",
+								function(event) {
+									if (event.key === "Enter") {
+										var searchString = document
+												.getElementById("searchInput").value;
+										var encodedSearchString = encodeURIComponent(searchString);
+										var searchLink = '/user/search/'
+												+ encodedSearchString;
+										document.getElementById("searchLink").href = searchLink;
+										// Chuyển đến controller /search/{keyword}
+										window.location.href = searchLink;
+									}
+								});
+			</script>
+
+			<div class="header__middle" >
+				<img
+					src="https://drive.google.com/uc?export=download&id=12Sx1OCgE9CoVjN7GbwAur3mUPWsXImAW"
+					alt="" width="200" />
+			</div>
+
+			<div class="header__right">
+				<a th:href="${'/trangcanhan/thongtintaikhoan/'+taiKhoan.taiKhoan}" style="word-wrap: break-word; color: black; font-size: 24px; font-weight: bold; text-decoration: none;">
+				<div class="header__info" th:onclick="${location.href='/trangcanhan/thongtintaikhoan/'+taiKhoan.taiKhoan};">
+					<img class="user__avatar post__avatar " width="100%" height="400px" alt="" th:if="${taiKhoan.avatarURl != null and taiKhoan.avatarURl.startsWith('http')}"
+										th:src="${taiKhoan.avatarURl}" />
+									
+									<!-- Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác -->
+					<img class="user__avatar post__avatar " width="100%" height="400px" alt="" th:if="${taiKhoan.avatarURl != null and !taiKhoan.avatarURl.startsWith('http')}"
+						th:src="@{'/files/' + ${taiKhoan.avatarURl}}" />
+					<h4>[[${taiKhoan.hoTen}]]</h4>
+				</div>
+				</a>
+				<span class="material-icons" onclick="location.href='/user/chat'"> forum </span> <span
+					class="material-icons" onclick="openPopup()" id="bell">
+					notifications_active </span>
+				<div class="popup" id="popup">
+					</li>
+					<!-- news -->
+					<div class="d-flex justify-content-between mx-2">
+						<h5>News</h5>
+					</div>
+					<th:block th:each="thongbao : ${thongbaos}">
+
+						<tr>
+							<a th:href="${thongbao.linkThongBao}"
+								class="d-flex
+				      	align-items-center
+				      	left-content-evenly
+				      	text-decoration-none text-dark">
+								<div class="d-flex align-items-left justify-content-evenly">
+									<div class="p-2">
+										<img
+											src="https://png.pngtree.com/png-vector/20191122/ourlarge/pngtree-megaphone-vector-illustration-isolated-on-white-background-megaphone-clip-art-png-image_2016772.jpg"
+											alt="avatar" class="rounded-circle"
+											style="width: 58px; height: 58px; object-fit: cover" />
+									</div>
+								</div>
+						</tr>
+						<tr>
+							<td>
+
+								<div>
+									<p style="margin-top: 10%; text-align: left;">
+										<span th:text="${thongbao.noiDung}"></span>
+									</p>
+									<p style="margin-top: -7%; text-align: left">
+										<span
+											th:text="${#temporals.format(thongbao.Ngay, 'dd-MM-yyyy')}"></span>
+										<span></span> <span
+											th:text="${#temporals.format(thongbao.thoiGian, 'HH:mm')}"></span>
+									</p>
+								</div>
+							</td>
+						</tr>
+						</a>
+					</th:block>
+					<button type="button" onclick="closePopup()">OK</button>
+				</div>
+
+
+			</div>
+		</div>
+		<!-- header ends -->
+	</div>
+	<script th:src="@{js/script_thongbao.js}">
+		
+	</script>
+
+
+</body>
+
+</html>

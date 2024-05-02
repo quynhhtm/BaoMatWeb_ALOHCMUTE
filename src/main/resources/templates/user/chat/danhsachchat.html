@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th "http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout-user.html}">
+
+<div id="chat-page" layout:fragment="content" style="width: 1200px; height: 610px; overflow-y: scroll">
+	<link rel="stylesheet" th:href="@{/css/style_chat.css}">
+
+	<div th:each="i:${danhsachbanbes}">
+		<a th:href="@{chat/{username}(username=${i.taiKhoan})}" class="list-group-item list-group-item-action border-0">
+			<div class="d-flex align-items-start">
+				<img th:src="@{'/files/' + ${i.avatarURl}}" class="rounded-circle mr-1" width="40" height="40">
+				<div class="user-left flex-grow-1 ml-3">
+					<div th:text="${i.taiKhoan}"></div>
+					<div class="small"><span class="fas fa-circle chat-offline"></span> Bạn bè
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout-admin.html}">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Quản lý bài viết</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/style_admin.css}">
+</head>
+
+<body>
+	<section class="row" layout:fragment="content">
+		<div class="contains container-fluid">
+			<div class="row flex-nowrap">
+				<div class="col py-3">
+					<div class="container-xl px-4 mt-4">
+						<div class="row">
+							<div class="col-xl-4">
+								<!-- Profile picture card-->
+								<div class="card mb-4 mb-xl-0">
+									<div class="card-header">Hình đại diện</div>
+									<!--<div class="social-profile">
+												<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl != null and taikhoan.avatarURl.startsWith('http')}"
+													th:src="${taikhoan.avatarURl}" />
+
+												 Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác 
+												<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl != null and !taikhoan.avatarURl.startsWith('http') and taikhoan.avatarURl != ''}"
+													th:src="@{'/files/' + ${taikhoan.avatarURl}}" />
+
+												<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl == null or taikhoan.avatarURl == ''}"
+													th:src="@{'/files/user.png'}" />
+
+												
+											</div>-->
+									<div class="card-body text-center">
+										<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl != null and taikhoan.avatarURl.startsWith('http')}"
+													th:src="${taikhoan.avatarURl}" />
+
+												<!-- Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác -->
+												<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl != null and !taikhoan.avatarURl.startsWith('http') and taikhoan.avatarURl != ''}"
+													th:src="@{'/files/' + ${taikhoan.avatarURl}}" />
+
+												<img class="img-fluid width-100" alt=""
+													th:if="${taikhoan.avatarURl == null or taikhoan.avatarURl == ''}"
+													th:src="@{'/files/user.png'}" />
+
+										<!--<img class="img-account-profile rounded-circle mb-2 img-profile-standard"
+    										th:if="${taikhoan.avatarURl == null or taikhoan.avatarURl == ''}"
+    										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAM1BMVEX///+8vLz09PS5ubn4+Pi2trba2tr8/Pzn5+fExMTw8PDBwcHs7OzMzMzR0dHU1NTh4eH0KMm5AAAENUlEQVR4nO2biY6rMAxFmw2ysP3/175AlwFK7NROWukpVxqNVA3TwyWxHSfcbk1NTU1NTU1NTU1NTU1NTaXUa+mHwUvd/5pkVe9tNwqzUxg763/I1tvJCaWUOGj9wE32J1zajsqceHZkRo1WfxupC2eH3rhU6L6J5ee0R0e/Zv8lJD2LLKQNS8zfcKtfsOd2fopL9TEv3UdIG5aTdZm6j5E2rK4ikh5JTJFqrDayZP4Af6MSlaahpRLdZaswkW16mFWBamEyRaqlNBPXpxpelWAqTeVLIK0qOAd1KGJUtCqUi1fUmHlBNZZiouWWBFWhjCMLMkWqItm5dyWZhHAlKhl+1DyqRAzVhZkiFX8GzjlQShlz/8n545nLlBE24zJvXryO8nZ2OeUNN4SiRik1Wam13BR/2wm1i2uVNtgXjP4B9JT2aKw1vFGFxU3VyRNTpJL4VSyjAnLP9g1pw8KKVFYKxCqWayacilXDwKNDpZhWKvhKRl7u4f88J5kiFTxtFT3XWHDuuTTSKjBlGvrzm6C7VQtgVLRqAZ2aqExwfRBApkgFzlxyrQCmGNVhUHC0oqYacAYpDzNJOYCXUwcVeKvIMF8FPX1yUIeilJpwKGiekCMVNFLBIPUYVGCoCkQoKEqh4xwb6YbG1NeFosUEsJbiQ9EKBQlCZYwpGIq2/vMgFHP2CUOLngMnHa+CU/JQAQqP6B5MM0Qo8PGxcx/x8YEDnVslUAc6srxC6ym4vieGBDB4Cl7lSQ6eYJoRvBqdnGbAhLxRkVczgp6Q8VbnkFr3DdiV5NIF73WGayptMZPpRV5OR/9qCsILmQcUtRzOaelfdl0yriMvHLJasErMg35xaT3kbXvT27Fgmt9huW64Mw1dViePsxhFlu377zAiOBdE3nEFwVq2ww0OsZn03kxUCreL0eDAWkEhPrbFHe1Rxi3xMcJbTKwtGigoRKS1tai1n912Fmg9DhTc7NdhryWIxWqaAeXHrtsZp5xdulX2byKCnU/eDlvqHyt3DE96s0cfP/Op0x7MraxETWUumsIXkV12icuZGyGXFUhIlwcnrMuGLHsf5CLVKJUqDi6ohqvowN5JfrMqDqdcpFXvA4u/YfS2tabEOQMjXvmzVwW21s6bkOEjnzavjnGlyEGOY61g8sfTy6vjqrbIdu1hYxtZVyWo9maX2djeR1A1EZgi1V8NVO7Q2TMvK2xVnKR6JsJyhyVu+nmflsa0C6IFj8H5R4AhGvW3Ni16CO5ew1CRVm13Vf4AFWnmvaxaahyAW0xG7w6SM8WPv0UqjlGrVRWYYmjnOVXpBDGLqt6pZnpIqHnSmhrRKyLdiI+w/ksYn5cu1ZE+xvra+z19/sLhq6/PZGF9+8WZW4/Z9av3stJcP31TrI+GnXueOn74Q6Sd+rt+jdHU1NTU1NTU1NTU1NTU9D/pH2s0NlASdE2nAAAAAElFTkSuQmCC" alt="">
+										<img class="img-account-profile rounded-circle mb-2 img-profile-standard"
+    										th:unless="${taikhoan.avatarURl == null or taikhoan.avatarURl == ''}"
+    										th:src="${taikhoan.avatarURl}" alt="">-->
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-8">
+								<!-- Account details card-->
+								<div class="card mb-4">
+									<div class="card-header">Thông tin tài khoản</div>
+									<div class="card-body">
+										<form>
+											<!-- Form Group (username)-->
+											<div class="mb-3">
+												<label class="small mb-1" for="inputUsername">Tên người dùng</label>
+												<input class="form-control" id="inputUsername" type="text"
+													placeholder="Enter your username" th:value="${taikhoan.taiKhoan}">
+											</div>
+											<!-- Form Row-->
+											<div class="row gx-3 mb-3">
+												<!-- Form Group (first name)-->
+												<div class="col-md-6">
+													<label class="small mb-1" for="inputFirstName">Họ tên</label>
+													<input class="form-control" id="inputFirstName" type="text"
+														placeholder="Enter your first name"
+														th:value="${taikhoan.hoTen}">
+												</div>
+												<!-- Form Group (last name)-->
+												<div class="col-md-6">
+													<label class="small mb-1" for="inputLastName">Nickname</label>
+													<input class="form-control" id="inputLastName" type="text"
+														placeholder="Enter your last name"
+														th:value="${taikhoan.nickName}">
+												</div>
+											</div>
+											<!-- Form Row        -->
+											<div class="row gx-3 mb-3">
+												<!-- Form Group (location)-->
+												<div class="col-md-6">
+													<label class="small mb-1" for="inputLocation">Giới tính</label>
+													<input class="form-control" id="inputLocation" type="text"
+														placeholder="Enter your location"
+														th:value="${taikhoan.gioiTinh}">
+												</div>
+												<!-- Form Group (email address)-->
+												<div class="col-md-6">
+													<label class="small mb-1" for="inputEmailAddress">Email</label>
+													<input class="form-control" id="inputEmailAddress" type="email"
+														placeholder="Enter your email address"
+														th:value="${taikhoan.email}">
+												</div>
+											</div>
+
+											<!-- Form Row-->
+											<div class="row gx-3 mb-3">
+												<!-- Form Group (phone number)-->
+												<div class="col-md-6">
+													<label class="small mb-1" for="inputPhone">Số điện thoại</label>
+													<input class="form-control" id="inputPhone" type="tel"
+														placeholder="Enter your phone number"
+														th:value="${taikhoan.sDT}">
+												</div>
+												<!-- Form Group (birthday)-->
+												<!--<div class="col-md-6">
+													<label class="small mb-1" for="inputBirthday">Ngày sinh</label>
+													<input class="form-control" id="inputBirthday" type="text"
+														name="birthday" placeholder="Enter your birthday"
+														value="06/10/1988">
+												</div>-->
+											</div>
+											<!-- Save changes button-->
+
+											<div class="chucnang">
+												<a th:if="${!taikhoan.enable}"
+													th:href="@{/admin/quanlynguoidung/{taikhoan}(taikhoan=${taikhoan.taiKhoan})}">
+													<button type="button" class="chophep btn btn-primary">Cấp lại
+														quyền</button>
+												</a>
+												<a th:if="${taikhoan.enable}"
+													th:href="@{/admin/quanlynguoidung/{taikhoan}(taikhoan=${taikhoan.taiKhoan})}">
+													<button type="button" class="chophep btn btn-danger">Cấm quyền
+														user</button>
+												</a>
+
+												<!--<a th:href="@{/admin/manage/delete/{taikhoan}(taikhoan=${taikhoan.taiKhoan})}" class="btn btn-danger">Xóa tài khoản</a>-->
+											</div>
+
+
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+	<script src="https://kit.fontawesome.com/adf0f449ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

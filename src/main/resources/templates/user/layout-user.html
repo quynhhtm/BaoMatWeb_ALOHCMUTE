@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th "http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="utf-8">
+	<title>Layout</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css}" rel="stylesheet"
+		integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+
+	<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css}" rel="stylesheet"
+		integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+	<link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet" />
+
+	<link th:href="@{https://getbootstrap.com/docs/5.0/examples/features/}" rel="canonical">
+	<link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet" />
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/style_banbe.css}" rel="stylesheet">
+	<link th:href="@{/css/style_newfeed.css}" rel="stylesheet" />
+	<link th:href="@{/css/style_quantrinhom.css}" rel="stylesheet">
+	<link th:href="@{/css/style_comment.css}" rel="stylesheet">
+	<link th:href="@{/css/style_dangbai.css}" rel="stylesheet">
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		/* Header Section (15%) */
+		.header {
+			width: 100%;
+			background-color: lightgray;
+			height: 15%;
+			/* Adjust as needed */
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+
+
+		.leftbar {
+			width: 20%;
+			margin-top: 7%;
+			background-color: lightblue;
+			height: 100vh;
+			/* Adjust as needed */
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 1;
+			/* Ensure the sidebar is above the header */
+		}
+
+		/* Clearfix to prevent layout issues due to floating elements */
+		.clearfix::after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+	</style>
+
+
+</head>
+
+<body>
+	<header class="header">
+		<div class="col">
+			<div th:replace="~{/user/fragments/header::header}"></div>
+		</div>
+	</header>
+
+	<main>
+		<table>
+			<td>
+				<section class="leftbar">
+					<div class="col">
+						<div th:replace="~{/user/fragments/leftbar::leftbar}"></div>
+					</div>
+				</section>
+			</td>
+			<td>
+				<section class="row">
+					<div class="col">
+						<div layout:fragment="content"></div>
+					</div>
+				</section>
+			</td>
+		</table>
+	</main>
+
+	<script th:src="@{/js/script_thongbao.js}">
+
+	</script>
+
+</body>
+
+</html>
