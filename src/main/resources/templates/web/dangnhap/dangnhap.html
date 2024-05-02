@@ -8,6 +8,10 @@
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{https://pro.fontawesome.com/releases/v5.10.0/css/all.css}">
 	<link rel="stylesheet" th:href="@{/css/style_dangnhap.css}">
+	
+	<link rel="stylesheet" th:href="@{/js/jquery-3.6.0.js}">
+	<link rel="stylesheet" th:href="@{/js/toastr.min.js}">
+	
 	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css}">
 </head>
 
@@ -21,11 +25,7 @@
 			<div class="wrapper">
 
 				<form method="post" th:action="@{/login}" th:object="${user}">
-					
-					<div>
-						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-					</div>
-					
+
 					<div class="field">
 						<input type="text" id="username" name="username" required>
 						<label for="">Tài khoản hoặc email</label>
@@ -54,8 +54,7 @@
 		</div>
 	</footer>
 </body>
-<script th:src="@{https://code.jquery.com/jquery-3.6.0.js}"></script>
-<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}"></script>
+
 <script th:if="${not #strings.isEmpty(mess)}">
 	$(document).ready(function () {
 		toastr.options = {
