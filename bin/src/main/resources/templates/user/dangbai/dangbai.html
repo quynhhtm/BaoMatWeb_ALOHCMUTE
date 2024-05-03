@@ -1,0 +1,350 @@
+<html xmlns:th "http://www.thymeleaf.org" xmlns:layout="http://ww.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout-user.html}">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Đăng bài</title>
+	<link rel="stylesheet" th:href="@{css/style_dangbai.css}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- FontAweome CDN Link for Icons -->
+	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css}" />
+	<style>
+		body {
+			margin-left: 23%;
+			margin-top: 3.5%;
+			padding: 0;
+			box-sizing: border-box;
+			background-color: aliceblue;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100vh;
+
+		}
+	</style>
+
+
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="container1">
+			<div class="wrapper">
+				<section class="postdangbai">
+					<header>Đăng bài</header>
+					<form action="#" th:action="@{/user/dangbai/add}" method="POST" enctype="multipart/form-data">
+						<div class="content">
+							<img class="imgavatar" alt="" th:if="${taiKhoan.avatarURl != null and taiKhoan.avatarURl.startsWith('http')}"
+										th:src="${taiKhoan.avatarURl}" />
+									
+									<!-- Nếu không phải đường dẫn HTTP, có thể hiển thị một hình ảnh mặc định hoặc thông báo khác -->
+							<img class="imgavatar" alt="" th:if="${taiKhoan.avatarURl != null and !taiKhoan.avatarURl.startsWith('http')}"
+								th:src="@{'/files/' + ${taiKhoan.avatarURl}}" />
+							<div class="details">
+								<b th:text="${taikhoan.hoTen}"
+									style="margin-left: 5px; margin-bottom: 5px; font-family: 'Consolas', Times, serif; font-size: 20px;"></b>
+								</br>
+								<select name="privacy" id="privacy" class="combobox">
+									<option value="Public">Công Khai</option>
+									<option value="Follower">Người Theo Dõi</option>
+									<option value="Private">Riêng Tư</option>
+								</select>
+							</div>
+						</div>
+						<textarea id="postContent" name="noidungchu" placeholder="Bạn đang nghĩ gì?"
+							onkeyup="suggestNames(event)" class="emoji-input"></textarea>
+						<input type="hidden" id="color" name="color">
+						<div id="uploaded-image-container"></div>
+						<div id="suggestions" class="suggestions-container"></div>
+						<span class="material-icons" onclick="openPop()"> <img src="/images/theme.svg" alt="theme">
+						</span>
+						<div class="pop" id="pop">
+							<table id="color-table"></table>
+
+							<button type="button" onclick="closePop()"> OK</button>
+						</div>
+						<!-- Smiley icon to trigger emoji picker -->
+						<div class="popp" id="popp">
+							<table id="emoji-table"></table>
+
+							<button type="button" onclick="closePopp()"> OK</button>
+						</div>
+						<div class="options">
+							<p>Thêm vào bài đăng</p>
+							<ul class="list">
+								<li>
+									<div class="image-upload">
+										<label for="file-input">
+											<img src="/images/gallery.svg" />
+										</label>
+
+										<input id="file-input" type="file" name="file"
+											onchange="handleFileUpload(this)" />
+									</div>
+								</li>
+								<li><img src="/images/tag.svg" alt="gallery"></li>
+								<li><img src="/images/emoji.svg" alt="gallery" onclick="openPopp()"></li>
+							</ul>
+						</div>
+						<input type="hidden" name="manhom" th:value="${nhom}">
+						<button class="buttondangbai" type="submit">Đăng</button>
+					</form>
+				</section>
+
+			</div>
+		</div>
+
+		<script language="javascript">
+			const container = document.querySelector(".container1"),
+				privacy = container.querySelector(".post .privacy"),
+				arrowBack = container.querySelector(".audience .arrow-back");
+			privacy.addEventListener("click", () => {
+				container.classList.add("active");
+			});
+			arrowBack.addEventListener("click", () => {
+				container.classList.remove("active");
+			});
+			document.getElementById("btn1").onclick = function () {
+				var checkbox = document.getElementsByName("contact");
+				for (var i = 0; i < checkbox.length; i++) {
+					if (checkbox[i].checked === true) {
+						alert(checkbox[i].value);
+					}
+				}
+			};
+		</script>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var listbanbe = /*[[${listbanbe}]]*/[];
+  /*]]>*/
+		</script>
+
+		<script language="javascript">
+			function suggestNames(event) {
+				var input = event.target.value;
+				var suggestions = document.getElementById("suggestions");
+
+				var atIndex = input.lastIndexOf("@");
+				if (atIndex >= 0) {
+					var searchQuery = input.substring(atIndex + 1);
+					if (searchQuery.length > 0) {
+						var matchingFriends = listbanbe.filter(name => name.toLowerCase().startsWith(searchQuery.toLowerCase()));
+						suggestions.innerHTML = matchingFriends.map(name => `<div class="suggestion-item">${name}</div>`).join('');
+						suggestions.style.display = 'block';
+
+						var caretPos = atIndex;
+						var inputRect = event.target.getBoundingClientRect();
+
+						var posX = inputRect.left + caretPos * 8 + window.scrollX;
+						var posY = inputRect.top + window.scrollY;
+
+
+						if (posX > 820) {
+							suggestions.style.left = 820 + 'px';
+						}
+						else {
+							suggestions.style.left = (posX - 160) + 'px';
+						}
+
+						if (posY > 330) {
+							suggestions.style.top = 330 + 'px';
+						}
+						else {
+							suggestions.style.top = (posY + 23) + 'px';
+						}
+
+
+						// Add click event to suggestion items
+						document.querySelectorAll('.suggestion-item').forEach(item => {
+							item.addEventListener('click', function () {
+								var name = this.innerText;
+								var newText = input.substring(0, atIndex) + "@" + name + " ";
+								document.getElementById("postContent").value = newText;
+								suggestions.style.display = 'none';
+							});
+						});
+					} else {
+						suggestions.style.display = 'none';
+					}
+				} else {
+					suggestions.style.display = 'none';
+				}
+			}
+
+
+
+		</script>
+
+		<script>
+			function handleFileUpload(input) {
+				const file = input.files[0];
+				if (file) {
+					const fileName = file.name;
+
+					// Hiển thị tên file
+					const fileNameContainer = document.getElementById('uploaded-image-container');
+
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const imageUrl = e.target.result;
+
+						// Hiển thị hình ảnh trong một phần tử khác
+						const imageContainer = document.getElementById('uploaded-image-container');
+
+						// Tạo một div chứa hình ảnh và nút Remove
+						const imageDiv = document.createElement('div');
+						imageDiv.className = 'image-container';
+						imageDiv.innerHTML = `
+                    <img src="${imageUrl}" width="500" height="300" alt="Uploaded Image">
+                    <div class="remove-button" onclick="removeImage(this)">✕</div>
+                `;
+
+						imageContainer.appendChild(imageDiv);
+					};
+
+					reader.readAsDataURL(file);
+				}
+			}
+
+			function removeImage(button) {
+				// Xác định div cha của nút (chứa hình ảnh và nút Remove)
+				const parentDiv = button.parentNode;
+
+				// Xóa div cha khỏi container
+				parentDiv.parentNode.removeChild(parentDiv);
+			}
+		</script>
+		<script>
+			function insertEmoji(emoji) {
+				var emojiInput = document.getElementsByClassName('emoji-input')[0];
+				var currentCursorPosition = emojiInput.selectionStart;
+				var textBeforeCursor = emojiInput.value.substring(0, currentCursorPosition);
+				var textAfterCursor = emojiInput.value.substring(currentCursorPosition);
+				emojiInput.value = textBeforeCursor + emoji + textAfterCursor;
+				emojiInput.focus();
+				emojiInput.setSelectionRange(currentCursorPosition + emoji.length, currentCursorPosition + emoji.length);
+			}
+
+			function generateEmojiList() {
+				var emojiTable = document.getElementById('emoji-table');
+				var emojis = ['😊', '😂', '❤️', '👍', '🎉', '🌟', '🚀', '💡', '🔥', '⚡', '🌈', '🍕', '😢', '👌', '🙌', '😎', '😉', '😒', '😘', '😴', '💕', '👋', '🥰', '🤔', '😑', '😮', '😏', '😪', '🙃', '😭'];
+				if (emojiTable.rows.length == 0) {
+					for (var i = 0; i < emojis.length; i++) {
+						if (i % 5 === 0) {
+							var newRow = emojiTable.insertRow();
+						}
+
+						var emojiCell = newRow.insertCell();
+						emojiCell.textContent = emojis[i % emojis.length];
+						emojiCell.addEventListener('click', function () {
+							insertEmoji(this.textContent);
+							closePopup();
+						});
+
+					}
+				}
+			}
+
+			function toggleEmojiTable() {
+				var emojiTable = document.getElementById('emoji-table');
+				emojiTable.style.display = emojiTable.style.display === 'none' ? 'table' : 'none';
+			}
+
+			function openPopp() {
+				generateEmojiList();
+				var popup = document.getElementById('popp');
+				popup.classList.add('open-popp');
+			}
+
+			function closePopp() {
+				var popup = document.getElementById('popp');
+				popup.classList.remove('open-popp');
+			}
+		</script>
+		<script>
+			function insertColor(emoji) {
+				var emojiInput = document.getElementsByClassName('emoji-input')[0];
+				var color = document.getElementById('color');
+				color.value = emoji;
+				emojiInput.style.color = emoji;
+
+			}
+
+			function generateColorList() {
+				var colorTable = document.getElementById('color-table');
+				if (colorTable.rows.length == 0) {
+					for (var i = 0; i < 10; i++) {
+						if (i % 5 === 0) {
+							var newRow = colorTable.insertRow();
+						}
+						let defaultColors = ['#00FF00', '#FF0001', '#FF99CC', '#FF9900', '#00FFFF', '#000000', '#9900FF', '#FFFF00', '#008000', '#C0C0C0'];
+
+
+						(function () {
+							var colorCell = newRow.insertCell();
+							var svg = createColoredSVG(i);
+							colorCell.textContent = defaultColors[i % defaultColors.length];
+							colorCell.addEventListener('click', function () {
+								// Handle click event as needed
+								insertColor(colorCell.textContent);
+								closePop();
+							});
+							colorCell.appendChild(svg);
+						})();
+
+					}
+				}
+			}
+
+
+
+			function openPop() {
+				generateColorList();
+				var popup = document.getElementById('pop');
+				popup.classList.add('open-pop');
+			}
+
+			function closePop() {
+				var popup = document.getElementById('pop');
+				popup.classList.remove('open-pop');
+			}
+
+
+
+
+			function createColoredSVG(i) {
+				var svgNS = "http://www.w3.org/2000/svg";
+				var rect = document.createElementNS(svgNS, 'rect');
+				let defaultColors = ['#00FF00', '#FF0001', '#FF99CC', '#FF9900', '#00FFFF', '#000000', '#9900FF', '#FFFF00', '#008000', '#C0C0C0'];
+
+				rect.setAttribute('x', '0');
+				rect.setAttribute('y', '0');
+				rect.setAttribute('width', '50');
+				rect.setAttribute('height', '50');
+				console.log(i);
+				rect.style.fill = defaultColors[i];
+
+				var svg = document.createElementNS(svgNS, 'svg');
+				svg.setAttribute('width', '50');
+				svg.setAttribute('height', '50');
+				svg.appendChild(rect);
+
+				return svg;
+			}
+
+			function getFillColorFromSVG(svg) {
+				// Extract the fill color from the SVG and return it
+				return svg.querySelector('rect').style.fill;
+			}
+
+
+
+		</script>
+
+	</section>
+</body>
+
+</html>
