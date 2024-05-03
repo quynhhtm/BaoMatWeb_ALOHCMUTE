@@ -4,6 +4,10 @@
 	<meta charset="utf-8">
 	<title> Trang Đăng Ký</title>
 	<link rel="stylesheet" th:href="@{/css/style_dangky.css}">
+	
+	<link rel="stylesheet" th:href="@{/js/jquery-3.6.0.js}">
+	<link rel="stylesheet" th:href="@{/js/toastr.min.js}">
+	
 	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css}">
 </head>
 
@@ -84,8 +88,7 @@
 	</footer>
 </body>
 <script>document.getElementById("Nam").setAttribute("checked", "checked")</script>
-<script th:src="@{https://code.jquery.com/jquery-3.6.0.js}"></script>
-<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}"></script>
+
 <script th:if="${not #strings.isEmpty(mess)}">
 	$(document).ready(function () {
 		toastr.options = {
