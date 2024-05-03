@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import hcmute.alohcmute.filter.ContentTypeOptionsFilter;
 import hcmute.alohcmute.security.UserDetailsServiceImpl;
+import jakarta.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -107,4 +110,15 @@ public class WebSpringSecurity {
     public WebSecurityCustomizer webSecurityCustomizer() {
     	return (web) -> web.ignoring().requestMatchers("/css/**", "/images/**", "/js/**");
     }
+    
+    @Bean
+    public FilterRegistrationBean<Filter> contentTypeOptionsFilterRegistrationBean() {
+    	FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+    	registrationBean.setFilter(new ContentTypeOptionsFilter());
+    	registrationBean.addUrlPatterns("/*"); // Áp dụng filter cho tất cả các URL
+    	registrationBean.setName("contentTypeOptionsFilter");
+    	registrationBean.setOrder(1); // Xác định thứ tự ưu tiên của filter
+    	return registrationBean;
+    }
+
 }
