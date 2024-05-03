@@ -75,7 +75,7 @@ public class WebSpringSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-    	        .csrf(csrf -> csrf.disable())
+//    	        .csrf(csrf -> csrf.disable())
     	        .authorizeHttpRequests((authorize) -> authorize
     	        				.requestMatchers("/404").permitAll()
     	        				.requestMatchers("/forgotpassword/**").permitAll()
