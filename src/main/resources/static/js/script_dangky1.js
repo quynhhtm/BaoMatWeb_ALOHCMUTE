@@ -1,0 +1,1 @@
+document.getElementById("Nam").setAttribute("checked", "checked")

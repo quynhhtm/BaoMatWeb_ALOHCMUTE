@@ -2,12 +2,14 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Security-Policy" content="
+	default-src 'self' https://cdnjs.cloudflare.com; 
+	 form-action 'self';" />
 	<title> Trang Đăng Ký</title>
 	<link rel="stylesheet" th:href="@{/css/style_dangky.css}">
-	
 	<link rel="stylesheet" th:href="@{/js/jquery-3.6.0.js}">
 	<link rel="stylesheet" th:href="@{/js/toastr.min.js}">
-	
+
 	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css}">
 </head>
 
@@ -70,7 +72,7 @@
 				<label for="confirmPassword">Xác nhận mật khẩu</label>
 			</div>
 
-			<p id="passwordMatchError" style="color: red; display: none;">Mật khẩu không khớp.</p>
+			<p class="tberror" id="passwordMatchError">Mật khẩu không khớp.</p>
 
 			<div class="field">
 				<input type="submit" id="registerBtn" value="Tạo tại khoản" disabled>
@@ -90,111 +92,8 @@
 
 <script src="/js/jquery-3.6.0.js"></script>
 <script src="/js/toastr.min.js"></script>
-
-<script>document.getElementById("Nam").setAttribute("checked", "checked")</script>
-
-<script th:if="${not #strings.isEmpty(mess)}">
-	$(document).ready(function () {
-		toastr.options = {
-			"closeButton": true,
-			"progressBar": true,
-			"positionClass": "toast-top-right",
-			"showDuration": "300",
-			"hideDuration": "1000",
-			"timeOut": "5000",
-			"extendedTimeOut": "1000",
-			"showEasing": "swing",
-			"hideEasing": "linear",
-			"showMethod": "fadeIn",
-			"hideMethod": "fadeOut"
-		};
-		toastr["[[${typenotify}]]"]("[[${mess}]]");
-	});
-
-</script>
-<script>
-	$(document).ready(function () {
-		console.log("DOne");
-		
-		var passwordInput = $("#password");
-		var confirmPasswordInput = $("#confirmPassword");
-		var passwordMatchError = $("#passwordMatchError");
-		var registerBtn = $("#registerBtn");
-
-		$('input[name="username"').on('input', function () {
-			if ($(this).val().indexOf(' ') !== -1){
-				toastr.error('Không được nhập dấu cách.');
-	            var inputValue = $(this).val().trim();
-	            inputValue = inputValue.replace(/\s{2,}/g, ' ');
-	            $(this).val(inputValue);
-			}
-        });
-        
-        $('input[name="firstName"').on('input', function () {
-			if ($(this).val().match(/\s{2,}/)){
-				toastr.error('Không được nhập nhiều hơn 2 dấu cách.');
-	            var inputValue = $(this).val().trim();
-	            inputValue = inputValue.replace(/\s{2,}/g, '  ');	
-	            $(this).val(inputValue);
-			}
-        });
-        
-        $('input[name="lastName"').on('input', function () {
-			if ($(this).val().match(/\s{2,}/)){
-				toastr.error('Không được nhập nhiều hơn 2 dấu cách.');
-	            var inputValue = $(this).val().trim();
-	            inputValue = inputValue.replace(/\s{2,}/g, '  ');	
-	            $(this).val(inputValue);
-			}
-        });
-		
-		$('input[name="nickName"').on('input', function () {
-			if ($(this).val().indexOf(' ') !== -1){
-				toastr.error('Không được nhập dấu cách.');
-	            var inputValue = $(this).val().trim();
-	            inputValue = inputValue.replace(/\s{2,}/g, ' ');
-	            $(this).val(inputValue);
-			}
-		});
-		
-		$('input[name="email"').on('input', function () {
-			if ($(this).val().indexOf(' ') !== -1){
-				toastr.error('Không được nhập dấu cách.');
-	            var inputValue = $(this).val().trim();
-	            inputValue = inputValue.replace(/\s{2,}/g, ' ');
-	            $(this).val(inputValue);
-			}
-		});
-		
-
-		confirmPasswordInput.on("input", function () {
-			var password = passwordInput.val();
-			var confirmPassword = confirmPasswordInput.val();
-
-			if (password !== confirmPassword) {
-				passwordMatchError.show();
-				registerBtn.prop("disabled", true);
-
-			} else {
-				passwordMatchError.hide();
-				registerBtn.prop("disabled", false);
-			}
-		});
-
-		passwordInput.on("input", function () {
-			var password = passwordInput.val();
-			var confirmPassword = confirmPasswordInput.val();
-
-			if (password !== confirmPassword) {
-				passwordMatchError.show();
-				registerBtn.prop("disabled", true);
-
-			} else {
-				passwordMatchError.hide();
-				registerBtn.prop("disabled", false);
-			}
-		});
-	});
-</script>
+<script src="/js/script_dangky1.js"></script>
+<script src="/js/script_dangky2.js"></script>
+<script src="/js/script_dangky3.js"></script>
 
 </html>
